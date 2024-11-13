@@ -1,44 +1,83 @@
 import { Scene } from "phaser";
-import { AnimationName, PlayerType } from "../Constants";
+import { AnimationType, GameEvent, PlayerState } from "../Constants";
 import { AnimationController } from "./AnimationController";
+import { State, StateMachine } from "./State";
+import { OperatorState } from "../states/OperatorState";
+import { EventBus } from "../EventBus";
 
-export class Player{
+export interface IPlayer{
+    getScene(): Scene;
+}
+
+export class Player implements IPlayer{
     mainScene: Scene;
-    posX: number;
-    posY: number;
+    initialPosX: number;
+    initialPosY: number;
     initialScale : number;
     body: Phaser.Physics.Arcade.Sprite;
-    playerType: string = PlayerType.PLAYER
     animation: AnimationController;
+    stateMachine: StateMachine;
 
-    constructor(scene: Scene, x: number, y: number){
+
+    constructor(scene: Scene, x: number, y: number, callback:(player: Player) => void){
         this.mainScene = scene;
         
-        this.posX = x;
-        this.posY = y;
-        this.initialScale = 3;
+        this.initialPosX = x;
+        this.initialPosY = y;
+        this.initialScale = 2;
         
-        this.init();
         this.registerControllers();
+        this.init();
+
+        this.setUpStateAnimations();
+        callback(this);
+    }
+    getScene(): Scene {
+        return this.mainScene;
     }
 
     registerControllers() : void {
-        this.animation = new AnimationController(AnimationName.IDLE, this, this.mainScene)
+        this.animation = new AnimationController(AnimationType.IDLE, this, this.mainScene);
+        
     }
 
     init(): void{
-        this.body = this.mainScene.physics.add.sprite(this.posX, this.posY, this.playerType);
-        this.alterScale(this.initialScale, this.initialScale);
+        this.stateMachine = new StateMachine();
+        this.stateMachine.states.set(PlayerState.OPERATOR, new OperatorState(this));
+
+        this.stateMachine.changeState(PlayerState.OPERATOR);
     }
 
     update(time: number, delta: number) : void{
-        this.animation.play();
+        this.animation.update(time, delta);
+        this.stateMachine.update(time, delta);
     }
 
     alterScale(x: number, y: number) : void{
         this.body.setScale(x,y);
     }
 
+    getCurrentPositionX() : number{
+        return this.body != null ? this.body.x : this.initialPosX;
+    }
 
+    getCurrentPositionY() : number{
+        return this.body != null ? this.body.y : this.initialPosY;
+    }
+
+    setUpStateAnimations() : void{
+        this.stateMachine.states.forEach((value: State, key: PlayerState)=>{
+            for (let index = 0; index < value.animations.length; index++) {
+                this.animation.createAnimation(key, value.animations[index])
+            }
+        })
+
+        EventBus.emit(GameEvent.OnAnimationsProcessed)
+    }
+
+    transform(): void {
+        //Destroy the existing Player instance and replace with a Human instance
+        this.body.destroy();
+    }
 
 }

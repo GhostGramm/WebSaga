@@ -1,5 +1,5 @@
 import { Scene } from 'phaser';
-import { GameEvent, PlayerType, SceneName } from '../Constants';
+import { GameEvent, SceneName } from '../Constants';
 import { EventBus } from '../EventBus';
 
 export class Preloader extends Scene
@@ -36,8 +36,8 @@ export class Preloader extends Scene
 
         this.load.image('logo', 'logo.png');
         this.load.image('star', 'star.png');
-        this.load.spritesheet(PlayerType.PLAYER, "soldier/Soldier-Idle.png", {frameWidth: 100, frameHeight: 100});
-        this.load.spritesheet(PlayerType.HUMAN, "soldierV2/idle.png", {frameWidth: 120, frameHeight: 80});
+        this.load.spritesheet("OperatorIdle", "Operator/OperatorIdle.png", {frameWidth: 100, frameHeight: 100});
+        // this.load.spritesheet(PlayerType.HUMAN, "soldierV2/idle.png", {frameWidth: 120, frameHeight: 80});
 
         
 

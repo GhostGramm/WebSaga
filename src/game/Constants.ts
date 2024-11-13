@@ -4,13 +4,14 @@ export class SceneName {
 
 export class GameEvent{
     static OnSceneLoaded = "onsceneloaded";
+    static OnAnimationsProcessed = "onAnimationsProcessed";
 }
 
-export class PlayerType{
-    static PLAYER: string = "Transformer";
-    static HUMAN: string = "Human";
+
+export enum PlayerState{
+    OPERATOR = "Operator"
 }
 
-export class AnimationName{
-    static IDLE = "idle";
+export enum AnimationType{
+    IDLE = "Idle"
 }
