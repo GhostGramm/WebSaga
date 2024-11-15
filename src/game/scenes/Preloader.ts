@@ -37,7 +37,7 @@ export class Preloader extends Scene
         this.load.image('logo', 'logo.png');
         this.load.image('star', 'star.png');
         this.load.spritesheet("OperatorIdle", "Operator/OperatorIdle.png", {frameWidth: 100, frameHeight: 100});
-        // this.load.spritesheet(PlayerType.HUMAN, "soldierV2/idle.png", {frameWidth: 120, frameHeight: 80});
+        this.load.spritesheet("VeteranIdle", "soldierV2/VeteranIdle.png", {frameWidth: 120, frameHeight: 80});
 
         
 

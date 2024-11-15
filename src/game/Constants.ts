@@ -9,7 +9,8 @@ export class GameEvent{
 
 
 export enum PlayerState{
-    OPERATOR = "Operator"
+    OPERATOR = "Operator",
+    VETERAN = "Veteran"
 }
 
 export enum AnimationType{

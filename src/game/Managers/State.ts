@@ -10,9 +10,15 @@ export abstract class State{
         this.animations = [];
     }
 
-    public abstract OnEnter() : void;
     public abstract OnUpdate(time: number, delta: number) : void;
-    public abstract OnExit() : void;
+
+    public OnEnter() : void {
+        
+    };
+    
+    public OnExit() : void {
+        this.owner.body.destroy();
+    };
 }
 
 export class StateMachine{
@@ -27,6 +33,7 @@ export class StateMachine{
     }
 
     changeState(newState: PlayerState): void {
+        console.log(this.currentState);
         this.currentState?.OnExit();
 
         if(this.states.has(newState)){
@@ -34,9 +41,11 @@ export class StateMachine{
             state?.OnEnter();
 
             this.currentStateType = newState;
+            this.currentState = state != null ? state : this.currentState
         }
 
     }
+
 
     update(time: number, delta: number){
         this.currentState?.OnUpdate(time, delta);

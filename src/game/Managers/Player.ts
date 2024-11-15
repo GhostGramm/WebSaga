@@ -4,6 +4,7 @@ import { AnimationController } from "./AnimationController";
 import { State, StateMachine } from "./State";
 import { OperatorState } from "../states/OperatorState";
 import { EventBus } from "../EventBus";
+import { VeteranState } from "../states/VeteranState";
 
 export interface IPlayer{
     getScene(): Scene;
@@ -44,6 +45,7 @@ export class Player implements IPlayer{
     init(): void{
         this.stateMachine = new StateMachine();
         this.stateMachine.states.set(PlayerState.OPERATOR, new OperatorState(this));
+        this.stateMachine.states.set(PlayerState.VETERAN, new VeteranState(this));
 
         this.stateMachine.changeState(PlayerState.OPERATOR);
     }
@@ -77,7 +79,8 @@ export class Player implements IPlayer{
 
     transform(): void {
         //Destroy the existing Player instance and replace with a Human instance
-        this.body.destroy();
+        const nextState = this.stateMachine.currentStateType == PlayerState.OPERATOR ? PlayerState.VETERAN : PlayerState.OPERATOR;
+        this.stateMachine.changeState(nextState);
     }
 
 }

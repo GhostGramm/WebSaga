@@ -17,7 +17,7 @@ export class Alpha extends Scene
 
         this.instancePlayer();
 
-        this.cameras.main.setZoom(1);
+        this.cameras.main.setZoom(2);
 
         EventBus.emit(GameEvent.OnSceneLoaded);
     }
@@ -34,6 +34,7 @@ export class Alpha extends Scene
         const space = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         space?.on('down', () =>{
             console.log("Space Bar pressed");
+            this.playerOne.transform();
         })
     }
 }

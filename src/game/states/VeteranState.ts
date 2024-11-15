@@ -2,8 +2,7 @@ import { AnimationType, PlayerState } from "../Constants";
 import { IPlayer } from "../Managers/Player";
 import { State } from "../Managers/State";
 
-export class OperatorState extends State{
-    
+export class VeteranState extends State{
     scale: number = 1;
 
     constructor(player: IPlayer){
@@ -13,12 +12,12 @@ export class OperatorState extends State{
     }
 
     public OnEnter(): void {
-        console.log("Just entered Operator State");
+        console.log("Just entered Veteran State");
         
-        this.owner.body = this.owner.mainScene.physics.add.sprite(this.owner.getCurrentPositionX(), this.owner.getCurrentPositionY(), "OperatorIdle");
+        this.owner.body = this.owner.mainScene.physics.add.sprite(this.owner.getCurrentPositionX(), this.owner.getCurrentPositionY(), "VeteranIdle");
         this.owner.alterScale(this.scale, this.scale);
 
-        this.owner.animation.setCurrentPlaying(PlayerState.OPERATOR, AnimationType.IDLE);
+        this.owner.animation.setCurrentPlaying(PlayerState.VETERAN, AnimationType.IDLE);
     }
 
     public OnUpdate(time: number, delta: number): void {
@@ -26,7 +25,7 @@ export class OperatorState extends State{
     }
     
     public OnExit(): void {
-        console.log("Just exitted Operator State");
+        console.log("Just exit Veteran State");
         super.OnExit();
     }
 }
